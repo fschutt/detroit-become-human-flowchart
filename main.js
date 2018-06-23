@@ -29,19 +29,20 @@ class TriangleRenderer {
         const [rows, cols] = calculate_necessary_triangles(triangle_width, triangle_height);
 
         this.container = container_node;
-        this.triangle_array = new Array(rows).fill(new Array(cols).fill(0));
+        this.triangle_array = create_array_properly(rows, cols, 0);
         this.triangle_width = triangle_width;
         this.triangle_height = triangle_height;
     }
 
     /// Fills `this.triangle_array` with random numbers
     animate_triangles() {
-        this.triangle_array.forEach(function (row, row_idx, array) {
-            row.forEach(function (cell, col_idx, row) {
-                row[col_idx] = Math.random();
-            });
+        this.triangle_array.forEach(function(row, row_idx, array) {
+            row.forEach(function(cell, cell_idx) {
+                if (Math.random() < 0.2) {
+                    array[row_idx][cell_idx] = Math.random() / 5.0;
+                }
+            })
         });
-        console.table(this.triangle_array);
     }
 
     /// Updates all the triangle nodes opacities in `this.container`.
@@ -69,7 +70,7 @@ class TriangleRenderer {
         const [rows, cols] = calculate_necessary_triangles(triangle_width, triangle_height);
         let container = this.container;
 
-        this.triangle_array = new Array(rows).fill(new Array(cols).fill([0, false]));
+        this.triangle_array = create_array_properly(rows, cols, 0);
 
         // clear the old triangles...
         // equal to `this.container.innerHtml = ""`, but faster
@@ -103,12 +104,26 @@ class TriangleRenderer {
             object.update_dom();
         }
 
-        window.setTimeout(function() {
+        window.setInterval(function() {
             object.animate_triangles();
             object.update_dom();
-        }, 100);
+        }, 2000);
     }
 
+}
+
+// JS is so fucked - if you create a multidimensional array via:
+// `new Array(rows).fill(new Array(cols).fill(value))`, every row in the
+// array is a ** reference ** to the first row. Why the fuck this is
+// a thing... I don't even want to know.
+function create_array_properly(rows, cols, value) {
+    let new_arr = new Array(rows);
+    for (let i = 0; i < rows; i++) {
+        let a = new Array(cols);
+        a.fill(value);
+        new_arr[i] = a;
+    }
+    return new_arr;
 }
 
 /// Returns a 2-element array [rows, columns]. Uses `window.innerWidth` and
