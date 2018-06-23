@@ -12,159 +12,21 @@
             <div class ="highlight">Confront deviant outside</div>
         </div>
     </div>
+    <script type="text/javascript" src="./main.js"></script>
+    <script type="text/javascript">
+
+        const TRIANGLE_WIDTH = 200;
+        const TRIANGLE_HEIGHT = 173.199;
+
+        let triangle_renderer = new TriangleRenderer(document.getElementById('triangle-container'), TRIANGLE_WIDTH, TRIANGLE_HEIGHT);
+
+        // first screen update
+        triangle_renderer.create_dom();
+        triangle_renderer.animate_triangles();
+        triangle_renderer.update_dom();
+
+        // set window timers
+        triangle_renderer.set_triangle_timers();
+    </script>
 </body>
-<script type="text/javascript">
-"use strict";
-
-/// Returns how many triangles fit in one row. Warning: may be 0
-function fill_screen_with_triangles(container_dom_node) {
-
-    const TRIANGLE_WIDTH = 200;
-    const TRIANGLE_WIDTH_HALF = TRIANGLE_WIDTH / 2;
-    const TRIANGLE_HEIGHT = 173.199;
-
-    let triangle_column = 0, triangle_row = 0;
-    let dom_str = "";
-    let triangles_in_row = 0;
-
-    while(true) {
-
-        let x = ((triangle_column - 2) * TRIANGLE_WIDTH_HALF);
-        let y = triangle_row * TRIANGLE_HEIGHT;
-
-        if (triangle_row % 2 === 0) {
-            x += TRIANGLE_WIDTH_HALF;
-        }
-
-        if (x > window.innerWidth) {
-            triangle_row += 1;
-            if (triangle_row % 2 === 0) {
-                triangle_column = -1;
-            } else {
-                triangle_column = 0;
-            }
-        }
-
-        if (y > window.innerHeight) {
-            break;
-        }
-
-        let dom_class = "triangle";
-
-        if (triangle_column % 2 != 0) {
-            dom_class += " odd";
-        }
-
-        dom_str += "<div class='" + dom_class + "' style='margin-left:" + x + "px; margin-top:" + y + "px;'></div>";
-        triangle_column += 1;
-        if (triangle_column > triangles_in_row) {
-            triangles_in_row = triangle_column;
-        }
-    }
-
-    container_dom_node.innerHTML = dom_str;
-    return triangles_in_row;
-}
-
-function draw_arrow_line(opacity_arr, first_row_arrow_start_idx, opacity, row_num) {
-    for (let i = 0; i < 4; i++) {
-        let idx = first_row_arrow_start_idx + i;
-        if (idx < (row_width * row_num)) {
-            opacity_arr[idx] = [opacity, true];
-        }
-    }
-}
-
-function calculate_arrow_start_index(row_width, forward, forward_row) {
-    let first_row_arrow_start_idx = Math.floor(row_width * 0.75);
-
-    if (first_row_arrow_start_idx % 2 == 0) {
-        first_row_arrow_start_idx -= 1;
-    }
-
-    if (!forward) {
-        first_row_arrow_start_idx += forward_row;
-    } else {
-        first_row_arrow_start_idx -= forward_row;
-    }
-
-    return first_row_arrow_start_idx;
-}
-
-/// container: the container of the triangles
-/// update partial: Should the background triangles all be updated, or only a random part of them
-/// row_width: how many triangles are on one row
-function animate_arrow(opacity_arr, row_width) {
-
-    let number_of_rows = Math.floor(container.childNodes.length / row_width);
-
-    let arrow_opacity = Math.random() / 3.0 + 0.3;
-
-    // we make the arrow 4 triangles thick and position it at 75% of the screens width
-    if (number_of_rows >= 1) {
-        let start_idx = calculate_arrow_start_index(row_width, true, 0);
-        start_idx -= 2;
-        draw_arrow_line(opacity_arr, start_idx, arrow_opacity, 1);
-    }
-    if (number_of_rows >= 2) {
-        let start_idx = calculate_arrow_start_index(row_width, true, 1);
-        start_idx += row_width * 1;
-        start_idx -= 2;
-        draw_arrow_line(opacity_arr, start_idx, arrow_opacity, 2);
-    }
-    if (number_of_rows >= 3) {
-        for (let i=3; i <= number_of_rows; i++) {
-            let start_idx = calculate_arrow_start_index(row_width, false, i - 2);
-            start_idx += row_width * (i - 1);
-            start_idx -= 4; // TODO: why - 4?
-            draw_arrow_line(opacity_arr, start_idx, arrow_opacity, i);
-        }
-    }
-}
-
-function animate_triangles(opacity_arr, update_partial) {
-    for(let i = 0; i < opacity_arr.length - 1; i++) {
-        opacity_arr[i][0] = Math.random();
-        /*if (!opacity_arr[i][1]) {
-        }*/
-    }
-}
-
-function update_triangles_dom(container, opacity_arr) {
-    opacity_arr.forEach(function(element, i) {
-        if (container.childNodes[i] !== undefined) {
-            container.childNodes[i].style.opacity = element[0];
-        }
-    });
-}
-
-let container = document.getElementById("triangle-container");
-let row_width = fill_screen_with_triangles(container);
-let opacity_arr = new Array(container.childNodes.length).fill([0, false]);
-
-animate_arrow(opacity_arr, row_width);
-// animate_triangles(opacity_arr, false);
-update_triangles_dom(container, opacity_arr);
-/*
-window.onresize = function() {
-    row_width = fill_screen_with_triangles(document.getElementById("triangle-container"));
-    let new_opacity_arr = new Array(document.getElementById("triangle-container").childNodes.length).fill([0, false]);
-    animate_arrow(new_opacity_arr, row_width);
-    animate_triangles(new_opacity_arr, false);
-    update_triangles_dom(document.getElementById("triangle-container"), new_opacity_arr);
-    opacity_arr = new_opacity_arr;
-};
-*/
-
-window.setInterval(function() {
-    animate_arrow(opacity_arr, document.getElementById("triangle-container"), row_width);
-    update_triangles_dom(document.getElementById("triangle-container"), opacity_arr);
-}, 300);
-/*
-window.setInterval(function() {
-    animate_triangles(opacity_arr, false);
-    update_triangles_dom(document.getElementById("triangle-container"), opacity_arr);
-}, 1001);
-*/
-</script>
 </html>
