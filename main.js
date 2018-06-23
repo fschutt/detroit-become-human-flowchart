@@ -38,11 +38,65 @@ class TriangleRenderer {
     animate_triangles() {
         this.triangle_array.forEach(function(row, row_idx, array) {
             row.forEach(function(cell, cell_idx) {
-                if (Math.random() < 0.2) {
-                    array[row_idx][cell_idx] = Math.random() / 5.0;
+                if (Math.random() < 0.5) {
+                    array[row_idx][cell_idx] = Math.random() / 4.0;
                 }
             })
         });
+
+        // row 0, col 1
+        // row 3, col 3
+        // row 6, col 1
+        // this.rasterize_triangle(0, 1, false);
+/*
+        this.rasterize_triangle(3, 3, false);
+        this.rasterize_triangle(6, 1, false);
+        this.rasterize_triangle(9, 3, false);
+*/
+        this.rasterize_triangle(0, 5, true);
+        this.rasterize_triangle(3, 1, true);
+        this.rasterize_triangle(6, 5, true);
+        this.rasterize_triangle(9, 1, true);
+        this.rasterize_triangle(6, -1, true);
+
+        console.table(this.triangle_array);
+    }
+
+    rasterize_triangle(row, col, point_up) {
+        let arr;
+
+        if (point_up) {
+            if (row % 2 == 0) {
+                arr = [[0, 0, 1, 0, 0, 0, 0],
+                       [1, 1, 1, 0, 0, 0, 0],
+                       [1, 1, 1, 1, 1, 0, 0]];
+            } else {
+                arr = [[0, 0, 1, 0, 0, 0, 0],
+                       [0, 0, 1, 1, 1, 0, 0],
+                       [1, 1, 1, 1, 1, 0, 0]];
+            }
+        } else {
+            if (row % 2 == 0) {
+                arr = [[0, 1, 1, 1, 1, 1, 0],
+                       [0, 1, 1, 1, 0, 0, 0],
+                       [0, 0, 0, 1, 0, 0, 0]];
+            } else {
+                // middle is shifted to right by 2 elements
+                arr = [[0, 1, 1, 1, 1, 1, 0],
+                       [0, 0, 0, 1, 1, 1, 0],
+                       [0, 0, 0, 1, 0, 0, 0]];
+            }
+        }
+
+        for(let i = 0; i < arr.length; i++) {
+            if (this.triangle_array[row + i]) {
+                for(let j = 0; j < arr[i].length; j++) {
+                    if ((this.triangle_array[row + i][col + j] !== undefined) && (arr[i][j] == 1)) {
+                        this.triangle_array[row + i][col + j] = 1;
+                    }
+                }
+            }
+        }
     }
 
     /// Updates all the triangle nodes opacities in `this.container`.
@@ -52,7 +106,9 @@ class TriangleRenderer {
         let container = this.container;
         this.triangle_array.forEach(function(row) {
             row.forEach(function(cell) {
-                container.childNodes[i].style.opacity = cell;
+                if (container.childNodes[i] !== undefined) {
+                    container.childNodes[i].style.opacity = cell;
+                }
                 i += 1;
             });
         });
@@ -81,8 +137,11 @@ class TriangleRenderer {
         // add the new triangles..
         this.triangle_array.forEach(function (row, row_idx) {
             row.forEach(function (cell, col_idx) {
-                const x = (col_idx * (triangle_width / 2.0)) - (triangle_width / 2.0);
                 const y = row_idx * triangle_height;
+                let x = (col_idx * (triangle_width / 2.0)) - (triangle_width / 2.0);
+                if (row_idx % 2 == 0) {
+                    x -= (triangle_width / 2.0);
+                }
                 let dom_element = document.createElement('div');
                 dom_element.className = col_idx % 2 == 0 ? "triangle" : "triangle odd";
                 dom_element.style.marginLeft = x + "px";
@@ -103,11 +162,12 @@ class TriangleRenderer {
             object.animate_triangles();
             object.update_dom();
         }
-
+/*
         window.setInterval(function() {
             object.animate_triangles();
             object.update_dom();
         }, 2000);
+*/
     }
 
 }
