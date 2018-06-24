@@ -35,37 +35,59 @@ class TriangleRenderer {
     }
 
     /// Fills `this.triangle_array` with random numbers
-    animate_triangles() {
+    animate_triangles_small() {
         this.triangle_array.forEach(function(row, row_idx, array) {
             row.forEach(function(cell, cell_idx) {
-                if (Math.random() < 0.5) {
-                    array[row_idx][cell_idx] = Math.random() / 4.0;
+                if (Math.random() < 0.04) {
+                    array[row_idx][cell_idx] = Math.random() / 3.0;
                 }
             })
         });
-
-        // row 0, col 1
-        // row 3, col 3
-        // row 6, col 1
-        // this.rasterize_triangle(0, 1, false);
-/*
-        this.rasterize_triangle(3, 3, false);
-        this.rasterize_triangle(6, 1, false);
-        this.rasterize_triangle(9, 3, false);
-*/
-        this.rasterize_triangle(0, 5, true);
-        this.rasterize_triangle(3, 1, true);
-        this.rasterize_triangle(6, 5, true);
-        this.rasterize_triangle(9, 1, true);
-        this.rasterize_triangle(6, -1, true);
-
-        console.table(this.triangle_array);
     }
 
-    rasterize_triangle(row, col, point_up) {
+    animate_triangles_large() {
+        // rasterize even triangles
+        for (let i = 0; i < this.triangle_array.length; i += 3) {
+
+            let number_of_cols = this.triangle_array[i].length;
+
+            let [j, q] = [1, -1];
+            if (i % 2 == 0) { j -= 2; q -= 2; }
+
+            let forward_propability, backward_propability;
+
+            if (i < 3) {
+                forward_propability = Math.random() < 0.3;
+                backward_propability = Math.random() < 0.5;
+            } else {
+                forward_propability = Math.random() < 0.3;
+                backward_propability = Math.random() < 0.5;
+            }
+
+            // rasterize forward pointing rhombus
+            for (; j < number_of_cols; j += 6) {
+                if (forward_propability) {
+                    let rng = Math.random() / 2.0;
+                    this.rasterize_triangle(i, j, false, rng);
+                    this.rasterize_triangle(i, j + 4, true, rng);
+                }
+            }
+
+            // rasterize backward pointing rhombus
+            for (; q < number_of_cols; q += 6) {
+                if (backward_propability) {
+                    let rng = Math.random() / 2.0;
+                    this.rasterize_triangle(i, q, true, rng);
+                    this.rasterize_triangle(i, q + 2, false, rng);
+                }
+            }
+        }
+    }
+
+    rasterize_triangle(row, col, triangle_points_up, opacity) {
         let arr;
 
-        if (point_up) {
+        if (triangle_points_up) {
             if (row % 2 == 0) {
                 arr = [[0, 0, 1, 0, 0, 0, 0],
                        [1, 1, 1, 0, 0, 0, 0],
@@ -89,10 +111,10 @@ class TriangleRenderer {
         }
 
         for(let i = 0; i < arr.length; i++) {
-            if (this.triangle_array[row + i]) {
+            if (this.triangle_array[row + i] !== undefined) {
                 for(let j = 0; j < arr[i].length; j++) {
                     if ((this.triangle_array[row + i][col + j] !== undefined) && (arr[i][j] == 1)) {
-                        this.triangle_array[row + i][col + j] = 1;
+                        this.triangle_array[row + i][col + j] = opacity;
                     }
                 }
             }
@@ -162,12 +184,21 @@ class TriangleRenderer {
             object.animate_triangles();
             object.update_dom();
         }
-/*
+
         window.setInterval(function() {
-            object.animate_triangles();
+            object.animate_triangles_small();
             object.update_dom();
-        }, 2000);
-*/
+        }, 2300);
+
+        window.setInterval(function() {
+            object.animate_triangles_small();
+            object.update_dom();
+        }, 3200);
+
+        window.setInterval(function() {
+            object.animate_triangles_large();
+            object.update_dom();
+        }, 6800)
     }
 
 }
