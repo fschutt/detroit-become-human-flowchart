@@ -7,29 +7,82 @@
 </head>
 <body>
     <!-- The grey-ish pattern in the background of the page -->
-    <div id="background-pattern">
-        <div id="triangle-container"></div>
-        <div class="event-lg">
-            <div class="choice large chosen" style="margin-top: 50px; margin-left: 50px;">Confront deviant outside</div>
-            <div class="choice" style="margin-top: 75px; margin-left: 75px;">Friendly approach</div>
+    <div id="triangle-container"></div>
+    <!-- The actual flowchart -->
+    <div id="flowchart" style="padding: 0px 50px">
+        <div class="choicegroup" style="margin-top: 50px;">
+            <div class="choice large chosen">Confront deviant outside</div>
+
+            <div class="choicegroup" style="margin-top: 50px;">
+                <div class="choice large chosen">Confront deviant outside</div>
+
+                <div class="choicegroup" style="margin-top: 50px;">
+                    <div class="choice large chosen">Confront deviant outside</div>
+                </div>
+            </div>
+        </div>
+        <div class="choicegroup" style="margin-top: 100px;margin-left: 4000px;">
+            <div class="choice chosen">Friendly approach</div>
+            <div class="choice">Cold approach</div>
+        </div>
+        <div class="choicegroup" style="margin-top: 200px;">
+            <div class="choice chosen">Fail to negotiate</div>
+        </div>
+        <div class="choicegroup" style="margin-top: 300px;">
+            <div class="choice">Fail to negotiate</div>
         </div>
     </div>
+
     <script type="text/javascript" src="./main.js"></script>
     <script type="text/javascript">
+        window.onload = function() {
+            const TRIANGLE_WIDTH = 200;
+            const TRIANGLE_HEIGHT = 173.199;
 
-        const TRIANGLE_WIDTH = 200;
-        const TRIANGLE_HEIGHT = 173.199;
+            function get_window_wh() {
+                const MAX_WIDTH = Math.max(
+                    document.documentElement["clientWidth"],
+                    document.body["scrollWidth"],
+                    document.documentElement["scrollWidth"],
+                    document.body["offsetWidth"],
+                    document.documentElement["offsetWidth"]
+                );
 
-        let triangle_renderer = new TriangleRenderer(document.getElementById('triangle-container'), TRIANGLE_WIDTH, TRIANGLE_HEIGHT);
+                const MAX_HEIGHT = Math.max(
+                    document.documentElement["clientHeight"],
+                    document.body["scrollHeight"],
+                    document.documentElement["scrollHeight"],
+                    document.body["offsetHeight"],
+                    document.documentElement["offsetHeight"]
+                );
 
-        // first screen update
-        triangle_renderer.create_dom();
-        triangle_renderer.animate_triangles_small();
-        triangle_renderer.animate_triangles_large();
-        triangle_renderer.update_dom();
+                return [MAX_WIDTH, MAX_HEIGHT];
+            }
 
-        // start animation
-        triangle_renderer.set_triangle_timers();
+            const [MAX_WIDTH, MAX_HEIGHT] = get_window_wh();
+            let triangle_renderer_background = new TriangleRenderer(
+                document.getElementById('triangle-container'),
+                MAX_WIDTH,
+                MAX_HEIGHT,
+                TRIANGLE_WIDTH,
+                TRIANGLE_HEIGHT);
+
+            // first screen update
+            triangle_renderer_background.create_dom(MAX_WIDTH, MAX_HEIGHT);
+            triangle_renderer_background.animate_triangles_small();
+            triangle_renderer_background.animate_triangles_large();
+            triangle_renderer_background.update_dom();
+
+            // start animation
+            triangle_renderer_background.set_triangle_timers();
+
+            window.onresize = function() {
+                triangle_renderer_background.create_dom(MAX_WIDTH, MAX_HEIGHT);
+                triangle_renderer_background.animate_triangles_small();
+                triangle_renderer_background.animate_triangles_large();
+                triangle_renderer_background.update_dom();
+            }
+        }
     </script>
 </body>
 </html>

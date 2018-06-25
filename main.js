@@ -20,13 +20,13 @@ class TriangleRenderer {
     /// - `container_node`: DomNode: The wrapper div around the rendered triangles
     /// - `triangle_width`: usize: The width of one triangle in pixels
     /// - `triangle_height`: usize: The height of one triangle in pixels
-    constructor(container_node, triangle_width, triangle_height) {
+    constructor(container_node, width, height, triangle_width, triangle_height) {
 
         assert_eq_type(container_node, document.createElement("div"));
         assert_eq_type(triangle_width, 0);
         assert_eq_type(triangle_height, 0);
 
-        const [rows, cols] = calculate_necessary_triangles(triangle_width, triangle_height);
+        const [rows, cols] = calculate_necessary_triangles(width, height, triangle_width, triangle_height);
 
         this.container = container_node;
         this.triangle_array = create_array_properly(rows, cols, 0);
@@ -38,7 +38,7 @@ class TriangleRenderer {
     animate_triangles_small() {
         this.triangle_array.forEach(function(row, row_idx, array) {
             row.forEach(function(cell, cell_idx) {
-                if (Math.random() < 0.01) {
+                if (Math.random() < 0.05) {
                     array[row_idx][cell_idx] = Math.random() / 3.0;
                 }
             })
@@ -69,7 +69,7 @@ class TriangleRenderer {
                 if (forward_propability) {
                     let rng = Math.random() / 2.0;
                     this.rasterize_triangle(i, j, false, rng);
-                    this.rasterize_triangle(i, j + 4, true, rng);
+                    // this.rasterize_triangle(i, j + 4, true, rng);
                 }
             }
 
@@ -140,13 +140,13 @@ class TriangleRenderer {
     /// to an empty array. Useful when the window is resized.
     ///
     /// Warning: modifies the DOM - removes the old DOM and creates a new one.
-    create_dom() {
+    create_dom(width, height) {
 
         // forEach messes with the this object, therefore we make a copy
         // of the triangle width and height values
         const [triangle_width, triangle_height] = [this.triangle_width, this.triangle_height];
-        const [rows, cols] = calculate_necessary_triangles(triangle_width, triangle_height);
         let container = this.container;
+        const [rows, cols] = calculate_necessary_triangles(width, height, triangle_width, triangle_height);
 
         this.triangle_array = create_array_properly(rows, cols, 0);
 
@@ -179,13 +179,6 @@ class TriangleRenderer {
 
         let object = this; // fucking hell, JavaScript...
 
-        window.onresize = function() {
-            object.create_dom();
-            triangle_renderer.animate_triangles_small();
-            triangle_renderer.animate_triangles_large();
-            object.update_dom();
-        }
-
         window.setInterval(function() {
             object.animate_triangles_small();
             object.update_dom();
@@ -201,7 +194,6 @@ class TriangleRenderer {
             object.update_dom();
         }, 6800)
     }
-
 }
 
 // JS is so fucked - if you create a multidimensional array via:
@@ -223,10 +215,18 @@ function create_array_properly(rows, cols, value) {
 ///
 /// This function does not modify the DOM in any way, it just calculates the number of
 /// rows and columns necessary.
-function calculate_necessary_triangles(triangle_width, triangle_height) {
+function calculate_necessary_triangles(width, height, triangle_width, triangle_height) {
 
     const TRIANGLE_WIDTH_HALF = triangle_width / 2;
-    const [WINDOW_WIDTH, WINDOW_HEIGHT] = [window.innerWidth, window.innerHeight];
+
+    const [WINDOW_WIDTH, WINDOW_HEIGHT] = [width, height];
+
+    if (WINDOW_WIDTH === undefined || WINDOW_HEIGHT === undefined) {
+        var err = new Error();
+        console.trace();
+        console.log(err.stack);
+        throw "window width or height is undefined: width: " + width + " height: " + height;
+    }
 
     let triangle_column = 0, triangle_row = 0;
     let max_triangle_column = 0;
