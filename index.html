@@ -11,21 +11,40 @@
     <div id="triangle-container"></div>
     <!-- The actual flowchart -->
     <div id="flowchart" style="padding: 0px 50px">
-        <div class="choicegroup brackets large-border row" style="margin-top: 50px;">
+
+        <div class="choicegroup brackets large row" style="margin-top: 50px;">
+            <div class="input-node chosen shift-left"></div>
             <div class="bracket-pre"><img src="./assets/bracket_pre.svg"></div>
             <div class="choicegroup">
-                <div class="choice large chosen large-border">Confront deviant outside</div>
+                <div class="choice chosen">
+                    <p>Confront deviant outside</p>
+                </div>
+            </div>
+            <div class="output-node chosen shift-right"></div>
+        </div>
+
+        <div class="choicegroup"  style="margin-top: 100px;margin-left: 150px">
+            <div class="output-node chosen output-top"></div>
+            <div class="choice chosen">
+                <div class="output-node chosen right"></div>
+                <p>Friendly approach</p>
+                <div class="output-node chosen left"></div>
+            </div>
+            <div class="choice">
+                <p>Cold approach</p>
+            </div>
+            <div class="output-node chosen output-bottom"></div>
+        </div>
+
+        <div class="choicegroup large-border" style="margin-top: 200px;">
+            <div class="choice chosen">
+                <div class="output-node chosen right"></div>
+                <p>Fail to negotiate</p>
             </div>
         </div>
-        <div class="choicegroup brackets" style="margin-top: 100px;margin-left: 150px">
-            <div class="choice chosen">Friendly approach</div>
-            <div class="choice">Cold approach</div>
-        </div>
-        <div class="choicegroup large-border" style="margin-top: 200px;">
-            <div class="choice chosen">Fail to negotiate</div>
-        </div>
+
         <div class="choicegroup" style="margin-top: 300px;">
-            <div class="choice">Fail to negotiate</div>
+            <div class="choice"><p>Fail to negotiate</p></div>
         </div>
     </div>
 

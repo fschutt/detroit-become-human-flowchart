@@ -5,6 +5,11 @@ html, body {
     width: 100%;
 }
 
+p {
+    margin: 0px;
+    padding: 0px;
+}
+
 body {
     display: flex;
     flex-direction: row;
@@ -31,7 +36,8 @@ body > #flowchart {
     position: relative;
 }
 
-.choicegroup.row {
+.row {
+    display: flex;
     flex-direction: row;
 }
 
@@ -53,19 +59,67 @@ body > #flowchart {
     z-index: -1;
 }
 
-.choicegroup.large-border.brackets:before {
+.choicegroup.large.brackets:before {
     border-image: url("./assets/border_blue_and_brackets.svg") 100 fill ;
     border-image-width: 20px;
     border-image-outset: 20px;
 }
 
-.choicegroup.large-border:before {
+.choice {
+    flex-direction: row;
+    position: relative;
+}
+
+.choice .output-node.left {
+    position: absolute;
+    top: 40%;
+    right: -9px;
+}
+
+.choice .output-node.right {
+    align-self: flex-end;
+    position: absolute;
+    top: 40%;
+    left: -9px;
+}
+.choice.chosen .output-node.right {
+    background: #14496f;
+}
+
+.choicegroup .output-node, .choicegroup .input-node {
+    width: 7px;
+    height: 7px;
+    background: #000;
+    align-self: center;
+}
+
+.choicegroup:not(.large) .output-node.output-bottom {
+    margin-top: 2px;
+}
+
+.choicegroup:not(.large) .output-node.output-top {
+    margin-bottom: -2px;
+}
+
+.choicegroup.large .output-node.shift-right {
+    transform: translateX(25px);
+}
+
+.choicegroup.large .input-node.shift-left {
+    transform: translateX(-25px);
+}
+
+.choicegroup .output-node.chosen, .choicegroup .input-node.chosen {
+    background: #2074bf;
+}
+
+.choicegroup.large:before {
     border-image: url("./assets/border_blue.svg") 80 fill ;
     border-image-width: 20px;
     border-image-outset: 20px;
 }
 
-.choicegroup.brackets:not(.large-border):before {
+.choicegroup.brackets:not(.large):before {
     border-image: url("./assets/border_brackets.svg") 100 fill ;
     border-image-width: 15px;
     border-image-outset: 20px;
@@ -85,7 +139,7 @@ body > #flowchart {
     position: relative;
 }
 
-body > #flowchart .choice.large {
+body > #flowchart .choicegroup.large .choice {
     padding: 6px 12px;
     height: 47px;
     font-size: 1.2em;
@@ -106,7 +160,7 @@ body > #flowchart .choice {
     background: #9d9c9b;
 }
 
-body > #flowchart .choice:not(.large):after {
+body > #flowchart .choicegroup:not(.large) .choice:after {
     content: "";
     position: absolute;
     z-index: -1;
@@ -116,11 +170,11 @@ body > #flowchart .choice:not(.large):after {
     right: -2px;
 }
 
-body > #flowchart .choice.chosen:not(.large):after {
+body > #flowchart .choicegroup:not(.large) .choice.chosen:after {
     background: linear-gradient(to right, #14496f, #2071b4);
 }
 
-body > #flowchart .choice:not(.chosen):not(.large):after {
+body > #flowchart .choicegroup:not(.large) .choice:not(.chosen):after {
     background: linear-gradient(to right, #7b797a, #868585);
 }
 
@@ -129,11 +183,11 @@ body > #flowchart .choice.chosen {
     border: none;
 }
 
-body > #flowchart .choice.chosen:not(.large) {
+body > #flowchart .choicegroup:not(.large) .choice.chosen {
     padding: 6px;
 }
 
-body > #flowchart .choice.chosen.large:before {
+body > #flowchart .choicegroup.large .choice.chosen:before {
     content: "";
     position: absolute;
     z-index: -1;
@@ -146,11 +200,11 @@ body > #flowchart .choice.chosen.large:before {
     box-shadow: inset 0 -40px 20px -35px #3371a785;
 }
 
-body > #flowchart .choice.chosen.large:after {
+body > #flowchart .choicegroup.large .choice.chosen:after {
     content: "";
     position: absolute;
     z-index: -1;
-    bottom: -100%;
+    top: 100%;
     right: 0px;
     left: 0px;
     height: 47px;
