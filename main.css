@@ -21,10 +21,58 @@ body > #flowchart {
        we need to scale them up a bit*/
     transform: scale(1.5);
     transform-origin: top left;
+    background: url("./assets/cross_grey.svg") repeat, url("./assets/cross_grey_small.svg") repeat;
+    background-position: 0% 25%, 25% 50%; /* animate this on scroll! */
 }
 
-body > #flochart > .choicegroup {
-    flex: 1 1 auto;
+.choicegroup {
+    display: flex;
+    flex-direction:column;
+    position: relative;
+}
+
+.choicegroup.row {
+    flex-direction: row;
+}
+
+.choicegroup.brackets .bracket-pre {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-right: 15px;
+}
+
+.choicegroup:before {
+    content: "";
+    position: absolute;
+    top: 0px;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: transparent;
+    z-index: -1;
+}
+
+.choicegroup.large-border.brackets:before {
+    border-image: url("./assets/border_blue_and_brackets.svg") 100 fill ;
+    border-image-width: 20px;
+    border-image-outset: 20px;
+}
+
+.choicegroup.large-border:before {
+    border-image: url("./assets/border_blue.svg") 80 fill ;
+    border-image-width: 20px;
+    border-image-outset: 20px;
+}
+
+.choicegroup.brackets:not(.large-border):before {
+    border-image: url("./assets/border_brackets.svg") 100 fill ;
+    border-image-width: 15px;
+    border-image-outset: 20px;
+}
+
+.choicegroup .choice:not(:first-child) {
+    margin-top: 4px;
 }
 
 body > #flowchart {
@@ -74,10 +122,6 @@ body > #flowchart .choice.chosen:not(.large):after {
 
 body > #flowchart .choice:not(.chosen):not(.large):after {
     background: linear-gradient(to right, #7b797a, #868585);
-}
-
-body > #flowchart .choicegroup .choice:not(:first-child) {
-    margin-top: 4px;
 }
 
 body > #flowchart .choice.chosen {

@@ -2,6 +2,7 @@
 <html>
 <head>
     <title>Detroit: Become Human Story Flowchart</title>
+    <meta charset="utf-8" />
     <link rel="stylesheet" type="text/css" href="./main.css">
     <link href="https://fonts.googleapis.com/css?family=Varela+Round" rel="stylesheet">
 </head>
@@ -10,22 +11,17 @@
     <div id="triangle-container"></div>
     <!-- The actual flowchart -->
     <div id="flowchart" style="padding: 0px 50px">
-        <div class="choicegroup" style="margin-top: 50px;">
-            <div class="choice large chosen">Confront deviant outside</div>
-
-            <div class="choicegroup" style="margin-top: 50px;">
-                <div class="choice large chosen">Confront deviant outside</div>
-
-                <div class="choicegroup" style="margin-top: 50px;">
-                    <div class="choice large chosen">Confront deviant outside</div>
-                </div>
+        <div class="choicegroup brackets large-border row" style="margin-top: 50px;">
+            <div class="bracket-pre"><img src="./assets/bracket_pre.svg"></div>
+            <div class="choicegroup">
+                <div class="choice large chosen large-border">Confront deviant outside</div>
             </div>
         </div>
-        <div class="choicegroup" style="margin-top: 100px;margin-left: 4000px;">
+        <div class="choicegroup brackets" style="margin-top: 100px;margin-left: 150px">
             <div class="choice chosen">Friendly approach</div>
             <div class="choice">Cold approach</div>
         </div>
-        <div class="choicegroup" style="margin-top: 200px;">
+        <div class="choicegroup large-border" style="margin-top: 200px;">
             <div class="choice chosen">Fail to negotiate</div>
         </div>
         <div class="choicegroup" style="margin-top: 300px;">
