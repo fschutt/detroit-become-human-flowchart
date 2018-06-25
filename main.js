@@ -38,7 +38,7 @@ class TriangleRenderer {
     animate_triangles_small() {
         this.triangle_array.forEach(function(row, row_idx, array) {
             row.forEach(function(cell, cell_idx) {
-                if (Math.random() < 0.04) {
+                if (Math.random() < 0.01) {
                     array[row_idx][cell_idx] = Math.random() / 3.0;
                 }
             })
@@ -57,8 +57,8 @@ class TriangleRenderer {
             let forward_propability, backward_propability;
 
             if (i < 3) {
-                forward_propability = Math.random() < 0.3;
-                backward_propability = Math.random() < 0.5;
+                forward_propability = Math.random() < 0.4;
+                backward_propability = Math.random() < 0.6;
             } else {
                 forward_propability = Math.random() < 0.3;
                 backward_propability = Math.random() < 0.5;
@@ -181,7 +181,8 @@ class TriangleRenderer {
 
         window.onresize = function() {
             object.create_dom();
-            object.animate_triangles();
+            triangle_renderer.animate_triangles_small();
+            triangle_renderer.animate_triangles_large();
             object.update_dom();
         }
 
