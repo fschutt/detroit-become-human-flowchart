@@ -8,4 +8,6 @@ This is only necessary if you want to re-generate the story for editing:
 
 ```
 pip install PyYAML
+pip install Jinja2
+pip install MyPy
 ```

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Detroit: Become Human - Story Flowchart - Chapter "{{ title }}"</title>
+    <meta charset="utf-8" />
+    <meta name="description" content='{{ description }}'>
+    <link rel="stylesheet" type="text/css" href="../css/main.css">
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,800" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Varela+Round" rel="stylesheet">
+</head>
+<body>
+    <div id="triangle-container"></div>
+    <div id="cross-container"></div>
+    <div id="heading-container">
+        <div id="header"><p>{{ title }}</p></div>
+        <div id="playing-as"><p>Playing as:</p>&nbsp;<p>{{ playing_as }}</p></div>
+        <div id="summary">
+            <p>{{ description }}</p>
+        </div>
+    </div>
+    <div id="flowchart" style="padding: 0px 50px">
+        {% for choice in choices %}
+        <div class="choicegroup">
+            <div class="choice chosen">
+                <p>{{ choices[choice]['title'] }}</p>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    <script type="text/javascript" src="../js/triangle_renderer.js"></script>
+    <script type="text/javascript" src="../js/init.js"></script>
+</body>
+</html>

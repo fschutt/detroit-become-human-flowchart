@@ -89,7 +89,7 @@ body > #heading-container > #summary {
 }
 
 .choicegroup.large.brackets:before {
-    border-image: url("./assets/border_blue_and_brackets.svg") 100 fill ;
+    border-image: url("../assets/border_blue_and_brackets.svg") 100 fill ;
     border-image-width: 20px;
     border-image-outset: 20px;
 }
@@ -144,13 +144,13 @@ body > #heading-container > #summary {
 
 #flowchart .choicegroup .large:before, .large-brackets:before {
     border: 5px solid red;
-    border-image: url("./assets/border_blue.svg") 80 fill ;
+    border-image: url("../assets/border_blue.svg") 80 fill ;
     border-image-width: 20px;
     border-image-outset: 30px;
 }
 
 .brackets:not(.large):before {
-    border-image: url("./assets/border_brackets.svg") 100 fill ;
+    border-image: url("../assets/border_brackets.svg") 100 fill ;
     border-image-width: 15px;
     border-image-outset: 20px;
 }
@@ -175,7 +175,7 @@ body > #cross-container {
     right: 0;
     left: 0;
     z-index: 1;
-    background: url("./assets/cross_grey.svg") repeat, url("./assets/cross_grey_small.svg") repeat;
+    background: url("../assets/cross_grey.svg") repeat, url("../assets/cross_grey_small.svg") repeat;
     background-position: 0% 25%, 25% 50%; /* animate this on scroll! */
 }
 
@@ -291,7 +291,7 @@ body > #triangle-container > .triangle {
 body > #triangle-container > .triangle:after {
     content: "";
     z-index: -1;
-    background: url("./assets/triangle.svg") repeat;
+    background: url("../assets/triangle.svg") repeat;
     top: 0;
     left: 0;
     bottom: 0;
