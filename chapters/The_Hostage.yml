@@ -1,0 +1,105 @@
+- chapter_index: 0
+- title: "The Hostage"
+- playing_as: "Connor"
+- description: "\"The Hostage\" is the first chapter of Detroit: Become Human.          \
+                The player controls Connor in his first case involving a deviant        \
+                android named Daniel who takes Emma Phillips hostage after murdering    \
+                her father John Phillips. This chapter has six different outcomes.      \
+                It was released as a free demo in April 24th 2018 worldwide."
+- choices:
+
+    - mission_start:
+        - type: checkpoint
+        - title: "Mission Start"
+        - output:
+          - connects: talk_to_captain
+          - orientation: right
+        - yt_id: "https://www.youtube.com/watch?v=JRDgihVDEko"
+
+    - save_or_leave_fish:
+        - type: choice
+        - children:
+          - save_fish:
+            - title: "Save Fish"
+            - yt_id: "https://www.youtube.com/watch?v=JRDgihVDEko"
+          - leave_fish:
+            - title: "Leave Fish"
+            - yt_id: "https://www.youtube.com/watch?v=JRDgihVDEko"
+
+    - talk_to_captain:
+        - title: "Talk to Captain Allen"
+        - input:
+            - connects: mission_start
+            - orientation: left
+        - output:
+          - connects: search_for_clues
+          - orientation: right
+
+    - search_for_clues:
+        - type: wrapper
+        - title: "Search for clues"
+        - outputs: [wasted_too_much_time, swat_injured, go_outside]
+        - children:
+
+            - investigate_fathers_body:
+                - type: search
+                - title: "Investigate fathers body"
+                - input:
+                    - connects: search_for_clues
+                    - orientation: bottom
+                - output:
+                    - connects: learn_cause_of_incident
+                    - orientation: right
+
+            - learn_cause_of_incident:
+                - type: search
+                - title: "Learn cause of incident"
+                - input:
+                    - connects: investigate_fathers_body
+                    - orientation: left
+
+            - learn_deviants_name:
+                - type: search
+                - title: "Learn deviants name"
+                - input:
+                    - connects: search_for_clues
+                    - orientation: bottom
+
+            - investiage_gun_case:
+                - type: search
+                - title: "Investigate gun case"
+                - input:
+                    - connects: search_for_clues
+                    - orientation: top
+
+            - investigate_cops_body:
+                - type: search
+                - title: "Investigate cops body"
+                - input:
+                    - connects: search_for_clues
+                    - orientation: top
+                - output:
+                    - connects: take_leave_gun
+                    - orientation: right
+
+            - take_leave_gun:
+                - type: choice
+                - input:
+                    - connects: investigate_cops_body
+                    - orientation: left
+                - children:
+                    - take_gun:
+                      - title: "Take cops gun"
+                      - unlocks: The_Hostage/gun
+                    - leave_fish:
+                      - title: "Leave cops gun"
+
+    - wasted_too_much_time:
+        - type: warn
+        - title: "Wasted too much time"
+        - input:
+            - connects: search_for_clues
+            - orientation: left
+
+    - swat_injured:
+        - type: small
